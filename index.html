@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Expense Tracker</title>
+     <!--Import bootstrap from //betweeen title and head
+    https://getbootstrap.com/docs/5.3/getting-started/introduction/-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container-lg">
+    <header>
+      <h1>Expense Tracker</h1>
+    </header>
+    </div>
+    <div class="container">
+    <section class="container">
+      <form id="my-form">
+        <!--<h1>Add Expense</h1>-->
+        <div class="msg"></div>
+        <div>
+          <label for="amt">Choose Expense Amount: </label>
+          <input type="number" id="amt"  class="col-12">
+        </div>
+        <div class="col-12">
+          <label for="des">Choose Description: </label>
+          <input type="text" id="des">
+        </div>
+        <!--For DRopdown(js project)-->
+        <div>
+          <label for="cat">Choose a Category: </label>
+          <select id="cat" class="col-12">
+            <!--DEFAULT TEXT TO SELECT INPUT FIELD-->
+            <option disabled selected value="">Select a Category:</option>
+            <option value="Gym">Gym</option>
+            <option value="Rent">Rent</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Swimming">Swimming</option>
+            <option value="Dance">Dance</option>
+            <option value="Haircare">Haircare</option>
+            <option value="Skincare">Skincare</option>
+            <option value="Home Upgrade">Home Upgrade</option> 
+          </select>
+          
+        </div>
+        <input class="btn" type="submit" value="Add Expense">
+      </form>
+
+      <ul id="users"></ul>
+<!--
+      <ul class="items">
+        <li class="item">HELLO</li>
+        <li class="item">Item 2</li>
+        <li class="item">Item 3</li>
+      </ul>  -->
+    </section>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
+
+<!--DRopdown as simple list: not as menu
+  <div>
+          <label for="cat">Choose a Category: </label>
+          <div class="ddown">
+          <input list="dropdown" id="cat" class="col-12">
+          <datalist id ="dropdown">
+            <option value="Gym"></option>
+            <option value="Rent">
+            <option value="Electricity">
+            <option value="Swimming">
+            <option value="Dance">
+            <option value="Haircare">
+            <option value="Skincare">
+            <option value="Home Upgrade">   
+          </datalist>
+          </div>
+        </div>-->
