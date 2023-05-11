@@ -24,16 +24,17 @@ btn.addEventListener('mouseout',(e1)=>{
 const myForm=document.querySelector('my-form');
 const amtInput=document.querySelector('#amt');
 const desInput=document.querySelector('#des');
-const catInput=document.querySelector('#cat');
+//const catInput=document.querySelector('#cat');
 const msg=document.querySelector('.msg');
 const userList=document.querySelector('#users');
 
 btn.addEventListener('click',onSubmit);
 
+
 function onSubmit(e){
     e.preventDefault();
 
-    if(amtInput.value===''||desInput.value===''||catInput.value===''){
+    if(amtInput.value===''||desInput.value===''){
         //alert('Please enter fields');
         msg.classList.add('error');
         msg.innerHTML='Please enter all fields';
@@ -66,7 +67,7 @@ function onSubmit(e){
   ///////////////////////////////
 
 
-        li.appendChild(document.createTextNode(`${amtInput.value}:${desInput.value}:${catInput.value}`));
+        li.appendChild(document.createTextNode(`${amtInput.value}:${desInput.value}`));
 
 
       //append button to li
@@ -88,25 +89,36 @@ function onSubmit(e){
         /////LOCAL STORAGE AS OBJECT
 
         const ob={
-            "Amount":amtInput.value,
-            "Description":desInput.value,
-            "Category":catInput.value
+            "Name":amtInput.value,
+            "Email":desInput.value,
+            
         };
+        //to backend crud crud
+        axios.post('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData',ob)
+            .then((response)=>{
+                console.log(response)
+            })
+            .catch((err)=>{document.BODY.innerHTML=document.body.innerHTML+'<h4>Oops..Something went wrong!<\h4>';
+            console.log(err)});
+
+  
+
+
 
         var obs=JSON.stringify(ob);
-        localStorage.setItem(amtInput.value,obs);
+        localStorage.setItem(desInput.value,obs);
         userList.appendChild(li);
         //console.log(obs);
 
         //getting deserialised
      
-        let obd=JSON.parse(localStorage.getItem(amtInput.value));
+        let obd=JSON.parse(localStorage.getItem(desInput.value));
         //console.log(obd);
         delBtn.addEventListener('click',removeItems);
         edBtn.addEventListener('click',edititems);
         ////
         function removeItems(e){
-            localStorage.removeItem(ob.Amount);
+            localStorage.removeItem(ob.Email);
             var itemList=document.getElementById('listitem').parentNode;
             ////////
             if(e.target.classList.contains('delete') || e.target.classList.contains('edit')){
@@ -125,19 +137,33 @@ function onSubmit(e){
 
         function edititems(e){
                 removeItems(e);
-                amtInput.value=ob.Amount;
-                desInput.value=ob.Description;
-                catInput.value=ob.Category;
+                amtInput.value=ob.Name;
+                desInput.value=ob.Email;
+                //catInput.value=ob.Category;
             }
 
         }
         //Clear
         amtInput.value='';
         desInput.value='';
-        catInput.value='';
+       
     }
 
+    window.addEventListener('load', function(e) {
+      
+       
+        axios.get('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData')
+        .then((response) => {
+          // The data is in the response object's 'data' property
+          const appointmentData = response.data;
+          console.log(appointmentData);})
+          // Display the appointment data on the page
+          // ...
+          .catch((err) => console.log(err));
+  
 
+  
+    });
 /*
 
 
