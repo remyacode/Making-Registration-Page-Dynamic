@@ -123,7 +123,7 @@ function onSubmit(e){
         }
     };
     function removeItems(e){
-        localStorage.removeItem(ob.Email);
+        //localStorage.removeItem(ob.Email);
         var itemList=document.getElementById('listitem').parentNode;
         ////////
         if(e.target.classList.contains('delete') || e.target.classList.contains('edit')){
@@ -132,6 +132,13 @@ function onSubmit(e){
         
         //localStorage.removeItem(ob.Email);
         itemList.removeChild(li);
+        axios.delete('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData',e.target)
+            .then((response)=>{
+                console.log(response)
+            })
+            .catch((err)=>{
+            console.log(err)});
+
         
     //}
 }
