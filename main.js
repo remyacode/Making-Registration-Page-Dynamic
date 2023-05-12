@@ -1,4 +1,3 @@
-
 //const ul=document.querySelector('.items');
 //ul.firstElementChild.textContent='HELLO';
 //ul.children[0].style.color='green';
@@ -117,46 +116,99 @@ function onSubmit(e){
         delBtn.addEventListener('click',removeItems);
         edBtn.addEventListener('click',edititems);
         ////
-        function removeItems(e){
-            localStorage.removeItem(ob.Email);
-            var itemList=document.getElementById('listitem').parentNode;
-            ////////
-            if(e.target.classList.contains('delete') || e.target.classList.contains('edit')){
-        //if(confirm('Are you Sure?')){
-            var li=e.target.parentElement;
-            
-            //localStorage.removeItem(ob.Email);
-            itemList.removeChild(li);
-            
-        //}
-    }
-            /////////
-
-
-            }
-
-        function edititems(e){
-                removeItems(e);
-                amtInput.value=ob.Name;
-                desInput.value=ob.Email;
-                //catInput.value=ob.Category;
-            }
-
-        }
+        
         //Clear
         amtInput.value='';
         desInput.value='';
-       
-    }
+        }
+    };
+    function removeItems(e){
+        localStorage.removeItem(ob.Email);
+        var itemList=document.getElementById('listitem').parentNode;
+        ////////
+        if(e.target.classList.contains('delete') || e.target.classList.contains('edit')){
+    //if(confirm('Are you Sure?')){
+        var li=e.target.parentElement;
+        
+        //localStorage.removeItem(ob.Email);
+        itemList.removeChild(li);
+        
+    //}
+}
+        /////////
 
-    window.addEventListener('load', function(e) {
+
+        };
+
+    function edititems(e){
+            removeItems(e);
+            amtInput.value=ob.Name;
+            desInput.value=ob.Email;
+            //catInput.value=ob.Category;
+        };
+
+    
+    window.addEventListener('DOMContentLoaded', function(e) {
       
        
         axios.get('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData')
         .then((response) => {
           // The data is in the response object's 'data' property
           const appointmentData = response.data;
-          console.log(appointmentData);})
+          console.log(appointmentData);
+
+        
+          const ulElement = document.createElement("ul");
+          
+          for (let i = 0; i < appointmentData.length; i++) {
+            var li = document.createElement("li");
+
+            li.id='listitem';
+        
+        ///////////delete
+        
+        var delBtn=document.createElement('button');
+        
+        //add classes to delete button
+        delBtn.className='btn btn-danger btn-sm float-right delete';
+        delBtn.id='del';
+        //append text node delete
+        delBtn.appendChild(document.createTextNode('Delete'));
+
+  //////////////EDIT//////////////
+
+        var edBtn=document.createElement('button');
+        
+  //add classes to edit button
+        edBtn.className='btn btn-danger btn-sm float-right edit';
+        edBtn.id='ed';
+//append text node delete
+        edBtn.appendChild(document.createTextNode('Edit'));
+
+  ///////////////////////////////
+
+
+        li.appendChild(document.createTextNode(`${amtInput.value}:${desInput.value}`));
+        
+
+      //append button to li
+        //li.appendChild(delBtn);
+        //li.appendChild(edBtn);
+
+        li.innerText = appointmentData[i].Name + " :: " + appointmentData[i].Email+delBtn+edBtn;
+        delBtn.addEventListener('click',removeItems);
+        edBtn.addEventListener('click',edititems);
+
+
+            
+            ulElement.appendChild(li);
+
+          }
+          
+          document.body.appendChild(ulElement);
+
+         
+        })
           // Display the appointment data on the page
           // ...
           .catch((err) => console.log(err));
