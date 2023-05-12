@@ -151,6 +151,13 @@ function onSubmit(e){
             removeItems(e);
             amtInput.value=ob.Name;
             desInput.value=ob.Email;
+        
+            axios.put('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData',{"Name":ob.Name,"Email":ob.Email})
+            .then((response)=>{
+                console.log(response)
+            })
+            .catch((err)=>{
+            console.log(err)});
             //catInput.value=ob.Category;
         };
 
