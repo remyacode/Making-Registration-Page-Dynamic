@@ -65,10 +65,10 @@ function editItem(e) {
         let editData = li.innerText.split("-");
         let editobjkey = li.classList[1];
         editId.textContent = editobjkey;
-        
+        //console.log(editData)
         document.getElementById('name').value = editData[0];
         document.getElementById('femail').value = editData[1];
-        document.getElementById('phone').value = editData[2].slice(0, 10);
+        document.getElementById('phone').value = editData[2].split(0,10)[0];
         itemList.removeChild(li);
     
     }
