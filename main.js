@@ -1,3 +1,87 @@
+
+var form = document.getElementById('my-form');
+var itemList = document.getElementById('items');
+var editId = document.getElementById('editId');
+// Form submit event
+btn=document.querySelector('#my-form .btn');
+btn.addEventListener('click', addItem);
+
+// Delete event
+itemList.addEventListener('click', removeItem);
+itemList.addEventListener('click', editItem);
+
+let crudid = '35fdc08cd83c4d03865a1f96365b9006'
+
+window.onload = () => {
+    axios.get(`https://crudcrud.com/api/${crudid}/appointmentData`)
+        .then((res) => {
+            res.data.forEach(e => {
+                showOutput(e)
+            });
+        })
+}
+// Add item
+function addItem(e) {
+    e.preventDefault();
+    let newName = document.getElementById('name').value;
+    let newEmail = document.getElementById('femail').value;
+    let newPhone = document.getElementById('phone').value;
+
+    class Myobj {
+        constructor(name, email, phone) {
+            this.name = name;
+            this.email = email
+            this.phone = phone
+        }
+    }
+    let postObj = new Myobj(newName, newEmail, newPhone)
+    if (editId && editId.textContent) {
+        axios.put(`https://crudcrud.com/api/${crudid}/appointmentData/${editId.textContent}`, postObj)
+        showOutput(postObj)
+
+    } else {
+        axios.post(`https://crudcrud.com/api/${crudid}/appointmentData`, postObj)
+            .then(res => showOutput(res.data))
+    }
+    form.reset()
+}
+// Remove item
+function removeItem(e) {
+    if (e.target.classList.contains('delete')) {
+        if (confirm('Are You Sure?')) {
+            var li = e.target.parentElement;
+            itemList.removeChild(li);
+            let editobjkey = li.classList[1];
+            axios.delete(`https://crudcrud.com/api/${crudid}/appointmentData/${editobjkey}`)
+        }
+    }
+}
+// edit item
+function editItem(e) {
+    
+
+    if (e.target.classList.contains('edit')) {
+        var li = e.target.parentElement;
+        let editData = li.innerText.split("-");
+        let editobjkey = li.classList[1];
+        editId.textContent = editobjkey;
+        
+        document.getElementById('name').value = editData[0];
+        document.getElementById('femail').value = editData[1];
+        document.getElementById('phone').value = editData[2].slice(0, 10);
+        itemList.removeChild(li);
+    
+    }
+}
+function showOutput(data) {
+    itemList.insertAdjacentHTML("beforeend", `
+        <li class="list-group-item ${data._id}">${data.name}-${data.email}-${data.phone}<button class="btn btn-primary btn-sm float-right edit ml-2">Edit</button><button class="btn btn-danger btn-sm float-right delete">X</button></li>`)
+}
+
+
+
+/*
+
 //const ul=document.querySelector('.items');
 //ul.firstElementChild.textContent='HELLO';
 //ul.children[0].style.color='green';
@@ -17,7 +101,7 @@ btn.addEventListener('mouseout',(e1)=>{
     
     console.log('mouseout');
 });
-*/
+
 
 
 const myForm=document.querySelector('my-form');
@@ -93,7 +177,7 @@ function onSubmit(e){
             
         };
         //to backend crud crud
-        axios.post('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData',ob)
+        axios.post('https://crudcrud.com/api/35fdc08cd83c4d03865a1f96365b9006/appointmentData',ob)
             .then((response)=>{
                 console.log(response)
             })
@@ -132,7 +216,7 @@ function onSubmit(e){
         
         //localStorage.removeItem(ob.Email);
         itemList.removeChild(li);
-        axios.delete('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData',e.target)
+        axios.delete('https://crudcrud.com/api/35fdc08cd83c4d03865a1f96365b9006/appointmentData',e.target)
             .then((response)=>{
                 console.log(response)
             })
@@ -152,7 +236,7 @@ function onSubmit(e){
             amtInput.value=ob.Name;
             desInput.value=ob.Email;
         
-            axios.put('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData',{"Name":ob.Name,"Email":ob.Email})
+            axios.put('https://crudcrud.com/api/35fdc08cd83c4d03865a1f96365b9006/appointmentData',{"Name":ob.Name,"Email":ob.Email})
             .then((response)=>{
                 console.log(response)
             })
@@ -162,10 +246,10 @@ function onSubmit(e){
         };
 
     
-    window.addEventListener('DOMContentLoaded', function(e) {
+    window.onload=()=> {
       
        
-        axios.get('https://crudcrud.com/api/8c4cccfbed344396ba9c7f58b378eaa0/appointmentData')
+        axios.get('https://crudcrud.com/api/35fdc08cd83c4d03865a1f96365b9006/appointmentData')
         .then((response) => {
           // The data is in the response object's 'data' property
           const appointmentData = response.data;
@@ -180,24 +264,12 @@ function onSubmit(e){
             li.id='listitem';
         
         ///////////delete
-        
-        var delBtn=document.createElement('button');
-        
-        //add classes to delete button
-        delBtn.className='btn btn-danger btn-sm float-right delete';
-        delBtn.id='del';
-        //append text node delete
-        delBtn.appendChild(document.createTextNode('Delete'));
+        var delBtn = '<button class="btn btn-danger btn-sm float-right delete" id="del">Delete</button>';
+
+var edBtn = '<button class="btn btn-danger btn-sm float-right edit" id="ed">Edit</button>';
+
 
   //////////////EDIT//////////////
-
-        var edBtn=document.createElement('button');
-        
-  //add classes to edit button
-        edBtn.className='btn btn-danger btn-sm float-right edit';
-        edBtn.id='ed';
-//append text node delete
-        edBtn.appendChild(document.createTextNode('Edit'));
 
   ///////////////////////////////
 
@@ -208,8 +280,7 @@ function onSubmit(e){
       //append button to li
         //li.appendChild(delBtn);
         //li.appendChild(edBtn);
-
-        li.innerText = appointmentData[i].Name + " :: " + appointmentData[i].Email+delBtn+edBtn;
+        li.innerHTML = appointmentData[i].Name + " :: " + appointmentData[i].Email + delBtn + edBtn;
         delBtn.addEventListener('click',removeItems);
         edBtn.addEventListener('click',edititems);
 
@@ -229,7 +300,7 @@ function onSubmit(e){
   
 
   
-    });
+    };
 /*
 
 
@@ -248,3 +319,4 @@ function removeItem(e){
 }
 
 */
+
